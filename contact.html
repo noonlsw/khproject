@@ -211,5 +211,23 @@
       }
     });
   </script>
+
+  <!-- Disqus 댓글 -->
+  <div style="width:100%;max-width:540px;margin-top:24px;">
+    <div id="disqus_thread"></div>
+  </div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://noonlsw.github.io/khproject/contact.html';
+      this.page.identifier = 'contact';
+    };
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kkk_y.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>댓글을 보려면 JavaScript를 활성화해주세요.</noscript>
 </body>
 </html>
