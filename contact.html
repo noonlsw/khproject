@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>제휴 문의</title>
+  <style>
+    :root[data-theme="light"] {
+      --bg: #f3f4f6; --card: #ffffff; --text: #111827; --subtext: #6b7280;
+      --border: #e5e7eb; --input-bg: #f9fafb; --shadow: rgba(0,0,0,0.08);
+      --toggle-bg: #e5e7eb;
+    }
+    :root[data-theme="dark"] {
+      --bg: #111827; --card: #1f2937; --text: #f9fafb; --subtext: #9ca3af;
+      --border: #374151; --input-bg: #374151; --shadow: rgba(0,0,0,0.35);
+      --toggle-bg: #374151;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: Arial, sans-serif; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 48px 20px; transition: background .3s, color .3s;
+    }
+
+    .top-bar {
+      width: 100%; max-width: 540px;
+      display: flex; justify-content: flex-end; margin-bottom: 16px;
+    }
+    .theme-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border: 1px solid var(--border);
+      border-radius: 20px; background: var(--toggle-bg);
+      color: var(--text); cursor: pointer; font-size: 13px;
+      transition: opacity .2s;
+    }
+    .theme-btn:hover { opacity: .8; }
+
+    .card {
+      width: 100%; max-width: 540px;
+      background: var(--card); border-radius: 20px;
+      padding: 40px 36px; box-shadow: 0 8px 32px var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .desc { font-size: 14px; color: var(--subtext); margin-bottom: 28px; line-height: 1.6; }
+
+    .field { margin-bottom: 18px; }
+    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+    label span { color: #ef4444; margin-left: 2px; }
+
+    input, textarea, select {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      background: var(--input-bg); color: var(--text);
+      font-size: 14px; font-family: Arial, sans-serif;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+    }
+    textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+    select option { background: var(--card); }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .submit-btn {
+      width: 100%; padding: 13px;
+      background: #2563eb; color: #fff;
+      border: none; border-radius: 10px;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer; margin-top: 8px;
+      transition: background .2s, transform .1s;
+    }
+    .submit-btn:hover { background: #1d4ed8; }
+    .submit-btn:active { transform: scale(.98); }
+    .submit-btn:disabled { background: #93c5fd; cursor: not-allowed; }
+
+    /* 성공 메시지 */
+    .success-msg {
+      display: none; text-align: center; padding: 32px 20px;
+    }
+    .success-msg .check { font-size: 48px; margin-bottom: 16px; }
+    .success-msg h2 { font-size: 20px; margin-bottom: 8px; }
+    .success-msg p { font-size: 14px; color: var(--subtext); }
+
+    @media (max-width: 480px) {
+      .card { padding: 28px 20px; }
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <button class="theme-btn" onclick="toggleTheme()">
+      <span id="theme-icon">🌙</span>
+      <span id="theme-label">다크 모드</span>
+    </button>
+  </div>
+
+  <div class="card">
+    <!-- 폼 -->
+    <div id="form-section">
+      <h1>📩 제휴 문의</h1>
+      <p class="desc">서비스 제휴, 광고, 협업 관련 문의를 남겨주시면<br>빠르게 검토 후 연락드리겠습니다.</p>
+
+      <!-- ★ action의 YOUR_FORM_ID를 Formspree에서 발급받은 ID로 교체하세요 -->
+      <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+
+        <div class="row">
+          <div class="field">
+            <label>담당자 이름 <span>*</span></label>
+            <input type="text" name="name" placeholder="홍길동" required>
+          </div>
+          <div class="field">
+            <label>회사 / 소속 <span>*</span></label>
+            <input type="text" name="company" placeholder="(주)예시회사" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>이메일 <span>*</span></label>
+          <input type="email" name="email" placeholder="example@company.com" required>
+        </div>
+
+        <div class="field">
+          <label>연락처</label>
+          <input type="tel" name="phone" placeholder="010-0000-0000">
+        </div>
+
+        <div class="field">
+          <label>문의 유형 <span>*</span></label>
+          <select name="inquiry_type" required>
+            <option value="" disabled selected>선택해주세요</option>
+            <option value="partnership">서비스 제휴</option>
+            <option value="advertising">광고 / 마케팅</option>
+            <option value="collaboration">콘텐츠 협업</option>
+            <option value="investment">투자 문의</option>
+            <option value="other">기타</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>문의 내용 <span>*</span></label>
+          <textarea name="message" placeholder="제휴 목적, 제안 내용 등을 자유롭게 작성해주세요." required></textarea>
+        </div>
+
+        <!-- Formspree 스팸 방지용 hidden 필드 -->
+        <input type="hidden" name="_subject" value="[제휴 문의] 새 문의가 도착했습니다">
+        <input type="hidden" name="_language" value="ko">
+
+        <button type="submit" class="submit-btn" id="submit-btn">문의 보내기</button>
+      </form>
+    </div>
+
+    <!-- 전송 완료 메시지 -->
+    <div class="success-msg" id="success-msg">
+      <div class="check">✅</div>
+      <h2>문의가 접수되었습니다!</h2>
+      <p>입력하신 이메일로 확인 메일을 보내드렸습니다.<br>빠른 시일 내에 담당자가 연락드리겠습니다.</p>
+    </div>
+  </div>
+
+  <script>
+    // ── Theme ─────────────────────────────
+    function applyTheme(t) {
+      document.documentElement.setAttribute('data-theme', t);
+      document.getElementById('theme-icon').textContent  = t === 'dark' ? '☀️' : '🌙';
+      document.getElementById('theme-label').textContent = t === 'dark' ? '라이트 모드' : '다크 모드';
+      localStorage.setItem('theme', t);
+    }
+    function toggleTheme() {
+      applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    }
+    applyTheme(localStorage.getItem('theme') || 'light');
+
+    // ── Form submit (AJAX) ─────────────────
+    const form      = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const formSec   = document.getElementById('form-section');
+    const successEl = document.getElementById('success-msg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = '전송 중...';
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          formSec.style.display = 'none';
+          successEl.style.display = 'block';
+        } else {
+          alert('전송에 실패했습니다. 잠시 후 다시 시도해주세요.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = '문의 보내기';
+        }
+      } catch {
+        alert('네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = '문의 보내기';
+      }
+    });
+  </script>
+</body>
+</html>
