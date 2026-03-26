@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-adsense-account" content="ca-pub-1746344877995213">
-  <title>제휴 문의</title>
+  <meta name="description" content="KH Tools 제휴 문의 — 서비스 제휴, 광고, 협업 등 다양한 파트너십 문의를 받습니다.">
+  <title>제휴 문의 — KH Tools</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1746344877995213" crossorigin="anonymous"></script>
   <style>
     :root[data-theme="light"] {
@@ -29,14 +30,21 @@
       width: 100%; max-width: 540px;
       display: flex; justify-content: flex-end; margin-bottom: 16px;
     }
-    .theme-btn {
-      display: flex; align-items: center; gap: 6px;
-      padding: 8px 14px; border: 1px solid var(--border);
-      border-radius: 20px; background: var(--toggle-bg);
-      color: var(--text); cursor: pointer; font-size: 13px;
-      transition: opacity .2s;
-    }
+    nav { background: var(--card); border-bottom: 1px solid var(--border); box-shadow: 0 2px 8px var(--shadow); position: sticky; top: 0; z-index: 100; }
+    .nav-inner { max-width: 860px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+    .nav-logo { font-weight: 700; font-size: 16px; text-decoration: none; color: var(--text); }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-links a { text-decoration: none; color: var(--subtext); font-size: 14px; padding: 6px 12px; border-radius: 8px; transition: background .2s, color .2s; }
+    .nav-links a:hover, .nav-links a.active { background: #eff6ff; color: #2563eb; }
+    :root[data-theme="dark"] .nav-links a:hover,
+    :root[data-theme="dark"] .nav-links a.active { background: #1e3a5f; color: #60a5fa; }
+    .theme-btn { display: flex; align-items: center; gap: 6px; padding: 7px 13px; border: 1px solid var(--border); border-radius: 20px; background: var(--toggle-bg); color: var(--text); cursor: pointer; font-size: 13px; transition: opacity .2s; }
     .theme-btn:hover { opacity: .8; }
+    footer { background: var(--card); border-top: 1px solid var(--border); padding: 32px 20px; text-align: center; margin-top: 32px; }
+    .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 12px; }
+    .footer-links a { text-decoration: none; font-size: 13px; color: var(--subtext); transition: color .2s; }
+    .footer-links a:hover { color: #2563eb; }
+    .footer-copy { font-size: 12px; color: var(--subtext); }
 
     .card {
       width: 100%; max-width: 540px;
@@ -97,12 +105,20 @@
 </head>
 <body>
 
-  <div class="top-bar">
-    <button class="theme-btn" onclick="toggleTheme()">
-      <span id="theme-icon">🌙</span>
-      <span id="theme-label">다크 모드</span>
-    </button>
-  </div>
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-logo" href="index.html">🍀 KH Tools</a>
+      <div class="nav-links">
+        <a href="index.html">🎱 로또 추천</a>
+        <a href="hair-simulator.html">✂️ 헤어 시뮬레이터</a>
+        <a href="about.html">소개</a>
+        <a href="contact.html" class="active">제휴 문의</a>
+        <button class="theme-btn" onclick="toggleTheme()">
+          <span id="theme-icon">🌙</span><span id="theme-label">다크 모드</span>
+        </button>
+      </div>
+    </div>
+  </nav>
 
   <div class="card">
     <!-- 폼 -->
@@ -231,5 +247,16 @@
     })();
   </script>
   <noscript>댓글을 보려면 JavaScript를 활성화해주세요.</noscript>
+
+  <footer>
+    <div class="footer-links">
+      <a href="index.html">로또 추천</a>
+      <a href="hair-simulator.html">헤어 시뮬레이터</a>
+      <a href="about.html">서비스 소개</a>
+      <a href="contact.html">제휴 문의</a>
+      <a href="privacy.html">개인정보처리방침</a>
+    </div>
+    <div class="footer-copy">© 2025 KH Tools. All rights reserved.</div>
+  </footer>
 </body>
 </html>

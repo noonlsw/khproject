@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-adsense-account" content="ca-pub-1746344877995213">
+  <meta name="description" content="KH Tools는 누구나 무료로 사용할 수 있는 실용적인 웹 도구를 만듭니다. 로또 번호 추천, 헤어스타일 시뮬레이터 등을 제공합니다.">
+  <title>서비스 소개 — KH Tools</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1746344877995213" crossorigin="anonymous"></script>
+  <style>
+    :root[data-theme="light"] {
+      --bg: #f3f4f6; --card: #ffffff; --text: #111827; --subtext: #6b7280;
+      --border: #e5e7eb; --shadow: rgba(0,0,0,0.08); --nav-bg: #ffffff; --toggle-bg: #e5e7eb;
+    }
+    :root[data-theme="dark"] {
+      --bg: #111827; --card: #1f2937; --text: #f9fafb; --subtext: #9ca3af;
+      --border: #374151; --shadow: rgba(0,0,0,0.4); --nav-bg: #1f2937; --toggle-bg: #374151;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: var(--bg); color: var(--text); transition: background .3s, color .3s; }
+
+    nav { background: var(--nav-bg); border-bottom: 1px solid var(--border); box-shadow: 0 2px 8px var(--shadow); position: sticky; top: 0; z-index: 100; }
+    .nav-inner { max-width: 860px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+    .nav-logo { font-weight: 700; font-size: 16px; text-decoration: none; color: var(--text); }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-links a { text-decoration: none; color: var(--subtext); font-size: 14px; padding: 6px 12px; border-radius: 8px; transition: background .2s, color .2s; }
+    .nav-links a:hover, .nav-links a.active { background: #eff6ff; color: #2563eb; }
+    :root[data-theme="dark"] .nav-links a:hover,
+    :root[data-theme="dark"] .nav-links a.active { background: #1e3a5f; color: #60a5fa; }
+    .theme-toggle { display: flex; align-items: center; gap: 6px; padding: 7px 13px; border: 1px solid var(--border); border-radius: 20px; background: var(--toggle-bg); color: var(--text); cursor: pointer; font-size: 13px; transition: opacity .2s; }
+    .theme-toggle:hover { opacity: .8; }
+
+    .page { max-width: 720px; margin: 0 auto; padding: 48px 20px 64px; }
+
+    .hero { text-align: center; margin-bottom: 48px; }
+    .hero h1 { font-size: 28px; font-weight: 800; margin-bottom: 12px; }
+    .hero p { font-size: 15px; color: var(--subtext); line-height: 1.8; max-width: 520px; margin: 0 auto; }
+
+    .card { background: var(--card); border-radius: 18px; padding: 32px; box-shadow: 0 8px 24px var(--shadow); border: 1px solid var(--border); margin-bottom: 24px; }
+    .section-title { font-size: 19px; font-weight: 800; margin-bottom: 16px; }
+
+    .service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .service-item { border: 1px solid var(--border); border-radius: 14px; padding: 22px; text-align: center; transition: box-shadow .2s; }
+    .service-item:hover { box-shadow: 0 4px 16px var(--shadow); }
+    .service-icon { font-size: 36px; margin-bottom: 12px; }
+    .service-name { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .service-desc { font-size: 13px; color: var(--subtext); line-height: 1.6; }
+    .service-link { display: inline-block; margin-top: 12px; font-size: 13px; color: #2563eb; text-decoration: none; font-weight: 600; }
+    .service-link:hover { text-decoration: underline; }
+
+    .value-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .value-list li { display: flex; gap: 14px; align-items: flex-start; }
+    .value-list .vi { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+    .value-list .vt { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .value-list .vd { font-size: 13px; color: var(--subtext); line-height: 1.6; }
+
+    .cta { text-align: center; }
+    .cta p { font-size: 15px; color: var(--subtext); margin-bottom: 20px; line-height: 1.7; }
+    .cta a { display: inline-block; padding: 12px 28px; background: #2563eb; color: #fff; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 15px; transition: background .2s; }
+    .cta a:hover { background: #1d4ed8; }
+
+    footer { background: var(--card); border-top: 1px solid var(--border); padding: 32px 20px; text-align: center; }
+    .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 12px; }
+    .footer-links a { text-decoration: none; font-size: 13px; color: var(--subtext); transition: color .2s; }
+    .footer-links a:hover { color: #2563eb; }
+    .footer-copy { font-size: 12px; color: var(--subtext); }
+
+    @media (max-width: 520px) {
+      .service-grid { grid-template-columns: 1fr; }
+      .nav-links a { font-size: 12px; padding: 6px 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">🍀 KH Tools</a>
+    <div class="nav-links">
+      <a href="index.html">🎱 로또 추천</a>
+      <a href="hair-simulator.html">✂️ 헤어 시뮬레이터</a>
+      <a href="about.html" class="active">소개</a>
+      <a href="contact.html">제휴 문의</a>
+      <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span><span id="theme-label">다크 모드</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="hero">
+    <h1>🍀 KH Tools 소개</h1>
+    <p>누구나 무료로, 설치 없이 바로 사용할 수 있는<br>실용적인 웹 도구를 만들고 있습니다.</p>
+  </div>
+
+  <div class="card">
+    <div class="section-title">제공 서비스</div>
+    <div class="service-grid">
+      <div class="service-item">
+        <div class="service-icon">🎱</div>
+        <div class="service-name">로또 번호 추천기</div>
+        <div class="service-desc">매주 로또를 구매하는 분들을 위해 1~45 번호 중 6개를 무작위로 조합한 5세트를 즉시 생성합니다. 번호 선택의 번거로움을 해소해드립니다.</div>
+        <a class="service-link" href="index.html">바로 사용하기 →</a>
+      </div>
+      <div class="service-item">
+        <div class="service-icon">✂️</div>
+        <div class="service-name">헤어스타일 시뮬레이터</div>
+        <div class="service-desc">노트북 카메라와 AI 얼굴 인식 기술을 결합해 실시간으로 다양한 남성 헤어스타일을 시뮬레이션합니다. 미용실 방문 전 미리 스타일을 확인하세요.</div>
+        <a class="service-link" href="hair-simulator.html">바로 사용하기 →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">KH Tools가 추구하는 가치</div>
+    <ul class="value-list">
+      <li>
+        <span class="vi">🆓</span>
+        <div>
+          <div class="vt">완전 무료</div>
+          <div class="vd">모든 서비스는 회원가입, 로그인, 결제 없이 무료로 이용하실 수 있습니다.</div>
+        </div>
+      </li>
+      <li>
+        <span class="vi">⚡</span>
+        <div>
+          <div class="vt">빠른 접근성</div>
+          <div class="vd">앱 설치가 필요 없습니다. 브라우저만 있으면 어떤 기기에서든 바로 사용할 수 있습니다.</div>
+        </div>
+      </li>
+      <li>
+        <span class="vi">🔒</span>
+        <div>
+          <div class="vt">개인정보 보호</div>
+          <div class="vd">카메라, 위치 등 민감한 정보는 기기 내에서만 처리되며 서버로 전송되지 않습니다.</div>
+        </div>
+      </li>
+      <li>
+        <span class="vi">🌙</span>
+        <div>
+          <div class="vt">사용자 편의</div>
+          <div class="vd">다크 모드, 반응형 레이아웃 등 다양한 환경에서 편리하게 사용할 수 있도록 설계했습니다.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card cta">
+    <div class="section-title">함께 성장하고 싶으신가요?</div>
+    <p>서비스 제휴, 광고, 협업 등 다양한 형태의 파트너십을 환영합니다.<br>아래 버튼을 통해 편하게 문의해주세요.</p>
+    <a href="contact.html">제휴 문의하기</a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="index.html">로또 추천</a>
+    <a href="hair-simulator.html">헤어 시뮬레이터</a>
+    <a href="about.html">서비스 소개</a>
+    <a href="contact.html">제휴 문의</a>
+    <a href="privacy.html">개인정보처리방침</a>
+  </div>
+  <div class="footer-copy">© 2025 KH Tools. All rights reserved.</div>
+</footer>
+
+<script>
+  function applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    document.getElementById('theme-icon').textContent  = t==='dark' ? '☀️' : '🌙';
+    document.getElementById('theme-label').textContent = t==='dark' ? '라이트 모드' : '다크 모드';
+    localStorage.setItem('theme', t);
+  }
+  function toggleTheme() { applyTheme(document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark'); }
+  applyTheme(localStorage.getItem('theme') || 'light');
+</script>
+</body>
+</html>

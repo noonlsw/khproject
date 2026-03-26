@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-adsense-account" content="ca-pub-1746344877995213">
-  <title>남성 헤어스타일 시뮬레이터</title>
+  <meta name="description" content="실시간 카메라로 남성 헤어스타일을 시뮬레이션. 투블럭, 리젠트, 가르마, 울프컷, 포마드, 버즈컷을 미용실 가기 전에 미리 확인하세요.">
+  <title>남성 헤어스타일 시뮬레이터 — KH Tools</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1746344877995213" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
@@ -26,6 +27,16 @@
 
     header { display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; background: var(--panel-bg); border-bottom: 1px solid var(--border); box-shadow: 0 2px 8px var(--shadow); }
     header h1 { font-size: 18px; font-weight: 700; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-links a { text-decoration: none; color: var(--subtext); font-size: 14px; padding: 6px 12px; border-radius: 8px; transition: background .2s, color .2s; }
+    .nav-links a:hover, .nav-links a.active { background: #eff6ff; color: #2563eb; }
+    :root[data-theme="dark"] .nav-links a:hover,
+    :root[data-theme="dark"] .nav-links a.active { background: #1e3a5f; color: #60a5fa; }
+    footer { background: var(--panel-bg); border-top: 1px solid var(--border); padding: 28px 20px; text-align: center; margin-top: 8px; }
+    .footer-links { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; margin-bottom: 10px; }
+    .footer-links a { text-decoration: none; font-size: 13px; color: var(--subtext); transition: color .2s; }
+    .footer-links a:hover { color: #2563eb; }
+    .footer-copy { font-size: 12px; color: var(--subtext); }
     .theme-btn { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border: 1px solid var(--border); border-radius: 20px; background: var(--toggle-bg); color: var(--text); cursor: pointer; font-size: 13px; transition: opacity .2s; }
     .theme-btn:hover { opacity: .8; }
 
@@ -62,7 +73,13 @@
 <body>
 
 <header>
-  <h1>✂️ 남성 헤어스타일 시뮬레이터</h1>
+  <a href="index.html" style="text-decoration:none;color:inherit;font-weight:700;font-size:15px;">🍀 KH Tools</a>
+  <div class="nav-links">
+    <a href="index.html">🎱 로또 추천</a>
+    <a href="hair-simulator.html" class="active">✂️ 헤어 시뮬레이터</a>
+    <a href="about.html">소개</a>
+    <a href="contact.html">제휴 문의</a>
+  </div>
   <button class="theme-btn" onclick="toggleTheme()">
     <span id="theme-icon">🌙</span><span id="theme-label">다크 모드</span>
   </button>
@@ -622,5 +639,16 @@ camera.start()
   .then(() => { loadingEl.classList.add('hidden'); statusEl.textContent = '카메라 연결됨 — 얼굴을 맞춰주세요'; })
   .catch(err => { loadMsgEl.textContent = '카메라 접근 실패: ' + err.message; document.querySelector('.spinner').style.display='none'; });
 </script>
+
+<footer>
+  <div class="footer-links">
+    <a href="index.html">로또 추천</a>
+    <a href="hair-simulator.html">헤어 시뮬레이터</a>
+    <a href="about.html">서비스 소개</a>
+    <a href="contact.html">제휴 문의</a>
+    <a href="privacy.html">개인정보처리방침</a>
+  </div>
+  <div class="footer-copy">© 2025 KH Tools. All rights reserved.</div>
+</footer>
 </body>
 </html>
