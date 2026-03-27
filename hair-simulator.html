@@ -25,6 +25,7 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
   <style>
     :root[data-theme="light"] {
       --bg:#f3f4f6;--panel-bg:#ffffff;--text:#111827;--subtext:#6b7280;
@@ -234,6 +235,7 @@ const FACE_OVAL=[
 ];
 
 // 얼굴 타원 기반 클립 패스 (위쪽 = 머리카락 공간으로 확장)
+// 세그멘테이션 마스크가 외곽을 처리하므로, 이마 위쪽을 더 넉넉하게 열어줌
 function buildHairClip(lms,geo){
   const {cx,cY,fh}=geo;
   ctx.beginPath();
@@ -241,16 +243,16 @@ function buildHairClip(lms,geo){
     const p=lp(lms,idx);
     let sx,sy;
     if(p.y<=cY+fh*0.06){
-      // 이마/윗부분: 옆으로 10% 확장 + 위로 크게 올림
-      sx=cx+(p.x-cx)*1.12;
-      sy=p.y-fh*0.44;
+      // 이마/윗부분: 옆으로 18% 확장 + 위로 크게 올림 (세그멘테이션이 외곽 처리)
+      sx=cx+(p.x-cx)*1.18;
+      sy=p.y-fh*0.55;
     } else if(p.y<=cY+fh*0.35){
-      // 관자놀이/볼 위쪽: 8% 확장, 약간 올림
-      sx=cx+(p.x-cx)*1.09;
+      // 관자놀이/볼 위쪽: 14% 확장, 약간 올림
+      sx=cx+(p.x-cx)*1.14;
       sy=p.y-fh*0.06;
     } else {
-      // 볼/턱: 5% 확장, 그대로
-      sx=cx+(p.x-cx)*1.05;
+      // 볼/턱: 8% 확장, 그대로 (얼굴 안쪽 클리핑)
+      sx=cx+(p.x-cx)*1.08;
       sy=p.y;
     }
     if(i===0) ctx.moveTo(sx,sy); else ctx.lineTo(sx,sy);
@@ -663,6 +665,24 @@ const loadingEl=document.getElementById('loading');
 const loadMsgEl=document.getElementById('loading-msg');
 const videoEl  =document.getElementById('cam');
 
+// ── Segmentation state ──────────────────────────
+let lastSegMask=null; // stores the latest segmentation mask (ImageBitmap)
+let segReady=false;
+let segFrameCount=0;
+
+// ── SelfieSegmentation (배경·머리 영역 분리) ────
+const selfieSegmentation=new SelfieSegmentation({
+  locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${f}`
+});
+selfieSegmentation.setOptions({modelSelection:1,selfieMode:true});
+selfieSegmentation.onResults(results=>{
+  if(results.segmentationMask){
+    lastSegMask=results.segmentationMask;
+    segReady=true;
+  }
+});
+
+// ── FaceMesh ────────────────────────────────────
 const faceMesh=new FaceMesh({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${f}`});
 faceMesh.setOptions({maxNumFaces:1,refineLandmarks:false,minDetectionConfidence:0.5,minTrackingConfidence:0.5});
 
@@ -671,13 +691,29 @@ faceMesh.onResults(results=>{
   if(results.multiFaceLandmarks&&results.multiFaceLandmarks.length>0){
     statusEl.textContent='얼굴 인식 중 ✓';
     drawHair(results.multiFaceLandmarks[0]);
+
+    // ★ 세그멘테이션 마스크로 머리카락을 실제 두상 외곽에 자연스럽게 클리핑
+    // destination-in: 캔버스에서 마스크 alpha가 0인 픽셀(배경)을 투명하게 제거
+    if(lastSegMask){
+      ctx.globalCompositeOperation='destination-in';
+      ctx.drawImage(lastSegMask,0,0,CW,CH);
+      ctx.globalCompositeOperation='source-over';
+    }
   } else {
     statusEl.textContent='얼굴을 카메라 중앙에 맞춰주세요';
   }
 });
 
+// ── Camera: FaceMesh 매 프레임 + 세그멘테이션 격프레임 ──
 const camera=new Camera(videoEl,{
-  onFrame:async()=>{ await faceMesh.send({image:videoEl}); },
+  onFrame:async()=>{
+    await faceMesh.send({image:videoEl});
+    // 세그멘테이션은 2프레임마다 실행 (성능 최적화)
+    segFrameCount++;
+    if(segFrameCount%2===0){
+      await selfieSegmentation.send({image:videoEl});
+    }
+  },
   width:640,height:480
 });
 camera.start()
