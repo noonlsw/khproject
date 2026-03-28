@@ -4,471 +4,166 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PawRecipe — 알러지 없는 밥상</title>
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cream: #FDF6EC;
-    --warm: #F5E6CC;
-    --accent: #D4541A;
-    --accent2: #E8853A;
-    --soft: #F7EFE3;
-    --dark: #2A1F14;
-    --mid: #7A6355;
-    --light: #C4A882;
-    --green: #5A8A5A;
-    --green-light: #EAF4EA;
-    --red-light: #FDEAEA;
-    --red: #C0392B;
-    --tag-bg: #FFF0E3;
-    --tag-border: #E8B882;
-    --radius: 16px;
-    --radius-sm: 10px;
+    --cream:#FDF6EC;--warm:#F5E6CC;--accent:#D4541A;--accent2:#E8853A;
+    --soft:#F7EFE3;--dark:#2A1F14;--mid:#7A6355;--light:#C4A882;
+    --green:#5A8A5A;--green-light:#EAF4EA;--red-light:#FDEAEA;--red:#C0392B;
+    --tag-bg:#FFF0E3;--tag-border:#E8B882;--radius:16px;--radius-sm:10px;
+    --ai1:#7C3AED;--ai2:#D4541A;
   }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  nav{background:var(--cream);border-bottom:1.5px solid var(--warm);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-family:'Black Han Sans',sans-serif;font-size:22px;color:var(--accent);}
+  .logo span{color:var(--dark);}
+  .nav-sub{font-size:12px;color:var(--mid);}
 
-  body {
-    font-family: 'Noto Sans KR', sans-serif;
-    background: var(--cream);
-    color: var(--dark);
-    min-height: 100vh;
-  }
+  .app-shell{display:grid;grid-template-columns:320px 1fr;min-height:calc(100vh - 60px);}
 
-  /* TOP NAV */
-  nav {
-    background: var(--cream);
-    border-bottom: 1.5px solid var(--warm);
-    padding: 0 24px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .logo {
-    font-family: 'Black Han Sans', sans-serif;
-    font-size: 22px;
-    color: var(--accent);
-    letter-spacing: -0.5px;
-  }
-  .logo span { color: var(--dark); }
-  .nav-sub { font-size: 12px; color: var(--mid); }
+  .panel-left{background:var(--soft);border-right:1.5px solid var(--warm);padding:28px 24px;overflow-y:auto;display:flex;flex-direction:column;gap:22px;}
+  .section-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--light);margin-bottom:10px;}
 
-  /* LAYOUT */
-  .app-shell {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    min-height: calc(100vh - 60px);
-  }
+  .pet-tabs{display:flex;gap:8px;}
+  .pet-tab{flex:1;padding:10px 8px;border-radius:var(--radius-sm);border:1.5px solid var(--warm);background:white;cursor:pointer;text-align:center;font-size:13px;font-weight:500;color:var(--mid);transition:all .18s;}
+  .pet-tab.active{background:var(--accent);border-color:var(--accent);color:white;}
+  .pet-tab .emoji{font-size:20px;display:block;margin-bottom:4px;}
 
-  /* LEFT PANEL */
-  .panel-left {
-    background: var(--soft);
-    border-right: 1.5px solid var(--warm);
-    padding: 28px 24px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-  }
+  .allergy-grid{display:flex;flex-wrap:wrap;gap:7px;}
+  .allergy-chip{padding:6px 12px;border-radius:99px;border:1.5px solid var(--tag-border);background:white;font-size:12px;color:var(--dark);cursor:pointer;transition:all .15s;user-select:none;}
+  .allergy-chip:hover{border-color:var(--accent2);background:var(--tag-bg);}
+  .allergy-chip.selected{background:var(--red-light);border-color:var(--red);color:var(--red);font-weight:600;}
+  .allergy-chip.selected::before{content:'✕ ';}
 
-  .section-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--light);
-    margin-bottom: 12px;
-  }
+  .custom-allergy{margin-top:10px;display:flex;gap:8px;}
+  .custom-allergy input{flex:1;padding:9px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--warm);background:white;font-size:13px;font-family:inherit;color:var(--dark);outline:none;}
+  .custom-allergy input:focus{border-color:var(--accent2);}
+  .btn-sm{padding:9px 14px;border-radius:var(--radius-sm);background:var(--accent);color:white;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;}
+  .btn-sm:hover{background:var(--accent2);}
 
-  /* PET SELECTOR */
-  .pet-tabs {
-    display: flex;
-    gap: 8px;
-  }
-  .pet-tab {
-    flex: 1;
-    padding: 10px 8px;
-    border-radius: var(--radius-sm);
-    border: 1.5px solid var(--warm);
-    background: white;
-    cursor: pointer;
-    text-align: center;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--mid);
-    transition: all 0.18s;
-  }
-  .pet-tab.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: white;
-  }
-  .pet-tab .emoji { font-size: 20px; display: block; margin-bottom: 4px; }
+  .meal-types{display:flex;flex-wrap:wrap;gap:7px;}
+  .meal-chip{padding:7px 14px;border-radius:99px;border:1.5px solid var(--warm);background:white;font-size:12px;color:var(--mid);cursor:pointer;transition:all .15s;user-select:none;}
+  .meal-chip.active{background:var(--green-light);border-color:var(--green);color:var(--green);font-weight:600;}
 
-  /* ALLERGY INPUT */
-  .allergy-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-  }
-  .allergy-chip {
-    padding: 6px 12px;
-    border-radius: 99px;
-    border: 1.5px solid var(--tag-border);
-    background: white;
-    font-size: 12px;
-    color: var(--dark);
-    cursor: pointer;
-    transition: all 0.15s;
-    user-select: none;
-  }
-  .allergy-chip:hover { border-color: var(--accent2); background: var(--tag-bg); }
-  .allergy-chip.selected {
-    background: var(--red-light);
-    border-color: var(--red);
-    color: var(--red);
-    font-weight: 600;
-  }
-  .allergy-chip.selected::before { content: '✕ '; }
+  .selected-summary{background:var(--red-light);border-radius:var(--radius-sm);padding:12px 14px;font-size:12px;color:var(--red);font-weight:500;min-height:40px;line-height:1.6;}
+  .selected-summary.empty{color:var(--light);font-weight:400;font-style:italic;}
 
-  .custom-allergy {
-    margin-top: 10px;
-    display: flex;
-    gap: 8px;
-  }
-  .custom-allergy input {
-    flex: 1;
-    padding: 9px 14px;
-    border-radius: var(--radius-sm);
-    border: 1.5px solid var(--warm);
-    background: white;
-    font-size: 13px;
-    font-family: inherit;
-    color: var(--dark);
-    outline: none;
-  }
-  .custom-allergy input:focus { border-color: var(--accent2); }
-  .btn-add {
-    padding: 9px 14px;
-    border-radius: var(--radius-sm);
-    background: var(--accent);
-    color: white;
-    border: none;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .btn-add:hover { background: var(--accent2); }
+  .btn-group{display:flex;flex-direction:column;gap:10px;}
+  .btn-search{width:100%;padding:14px;border-radius:var(--radius);background:var(--accent);color:white;border:none;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s;}
+  .btn-search:hover{background:var(--accent2);transform:translateY(-1px);}
+  .btn-search:disabled{background:var(--light);cursor:not-allowed;transform:none;}
 
-  /* MEAL TYPE */
-  .meal-types {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-  }
-  .meal-chip {
-    padding: 7px 14px;
-    border-radius: 99px;
-    border: 1.5px solid var(--warm);
-    background: white;
-    font-size: 12px;
-    color: var(--mid);
-    cursor: pointer;
-    transition: all 0.15s;
-    user-select: none;
-  }
-  .meal-chip.active {
-    background: var(--green-light);
-    border-color: var(--green);
-    color: var(--green);
-    font-weight: 600;
-  }
+  .btn-ai{width:100%;padding:14px;border-radius:var(--radius);border:none;background:linear-gradient(135deg,var(--ai1),var(--ai2));color:white;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+  .btn-ai:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,58,237,.3);}
+  .btn-ai:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none;}
+  .btn-ai-pulse{position:absolute;inset:0;background:rgba(255,255,255,.12);animation:pulse-in .6s ease-in-out infinite alternate;}
+  @keyframes pulse-in{from{opacity:0}to{opacity:1}}
 
-  /* SEARCH BUTTON */
-  .btn-search {
-    width: 100%;
-    padding: 15px;
-    border-radius: var(--radius);
-    background: var(--accent);
-    color: white;
-    border: none;
-    font-size: 15px;
-    font-weight: 700;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: -0.3px;
-  }
-  .btn-search:hover { background: var(--accent2); transform: translateY(-1px); }
-  .btn-search:disabled { background: var(--light); cursor: not-allowed; transform: none; }
+  .panel-right{padding:32px 36px;overflow-y:auto;}
+  .results-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:24px;}
+  .results-title{font-family:'Black Han Sans',sans-serif;font-size:24px;color:var(--dark);}
+  .results-count{font-size:13px;color:var(--mid);}
 
-  /* SELECTED TAGS */
-  .selected-summary {
-    background: var(--red-light);
-    border-radius: var(--radius-sm);
-    padding: 12px 14px;
-    font-size: 12px;
-    color: var(--red);
-    font-weight: 500;
-    min-height: 40px;
-    line-height: 1.6;
-  }
-  .selected-summary.empty { color: var(--light); font-weight: 400; font-style: italic; }
+  .recipe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;}
+  .recipe-card{background:white;border-radius:var(--radius);border:1.5px solid var(--warm);overflow:hidden;cursor:pointer;transition:all .2s;animation:fadeUp .3s ease forwards;opacity:0;}
+  .recipe-card:hover{border-color:var(--accent2);box-shadow:0 8px 24px rgba(212,84,26,.12);transform:translateY(-3px);}
+  .recipe-card.ai-card{border-color:#C4B5FD;}
+  .recipe-card.ai-card:hover{border-color:var(--ai1);box-shadow:0 8px 24px rgba(124,58,237,.15);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
-  /* RIGHT: RESULTS */
-  .panel-right {
-    padding: 32px 36px;
-    overflow-y: auto;
-  }
+  .card-emoji-band{height:90px;display:flex;align-items:center;justify-content:center;font-size:48px;background:var(--soft);border-bottom:1.5px solid var(--warm);position:relative;}
+  .ai-card .card-emoji-band{background:linear-gradient(135deg,#F3F0FF,#FDF6EC);border-bottom-color:#C4B5FD;}
+  .ai-badge-card{position:absolute;top:8px;right:8px;background:linear-gradient(135deg,var(--ai1),var(--ai2));color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;}
 
-  .results-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 24px;
-  }
-  .results-title {
-    font-family: 'Black Han Sans', sans-serif;
-    font-size: 24px;
-    color: var(--dark);
-  }
-  .results-count { font-size: 13px; color: var(--mid); }
+  .card-body{padding:16px;}
+  .card-title{font-size:15px;font-weight:700;color:var(--dark);margin-bottom:6px;}
+  .card-desc{font-size:12px;color:var(--mid);line-height:1.6;margin-bottom:12px;}
+  .card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+  .tag{padding:3px 10px;border-radius:99px;font-size:11px;font-weight:500;}
+  .tag-type{background:var(--tag-bg);color:var(--accent);}
+  .tag-pet{background:#EEF2FF;color:#5B6FD8;}
+  .tag-ai{background:#F3F0FF;color:var(--ai1);}
+  .card-ingredients{font-size:11px;color:var(--mid);line-height:1.7;}
+  .card-ingredients strong{color:var(--dark);font-weight:600;}
 
-  /* RECIPE CARDS */
-  .recipe-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-  }
+  /* 스트리밍 UI */
+  .stream-box{background:white;border-radius:var(--radius);border:1.5px solid #C4B5FD;padding:24px;margin-bottom:20px;position:relative;overflow:hidden;}
+  .stream-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--ai1),var(--ai2));}
+  .stream-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .stream-meta{font-size:12px;color:var(--mid);line-height:1.6;}
+  .stream-content{font-size:13px;line-height:1.9;color:var(--dark);white-space:pre-wrap;min-height:48px;font-family:'Noto Sans KR',sans-serif;}
+  .cursor{display:inline-block;width:2px;height:1em;background:var(--ai1);margin-left:2px;animation:blink .7s step-end infinite;vertical-align:text-bottom;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-  .recipe-card {
-    background: white;
-    border-radius: var(--radius);
-    border: 1.5px solid var(--warm);
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.2s;
-    animation: fadeUp 0.3s ease forwards;
-    opacity: 0;
-  }
-  .recipe-card:hover {
-    border-color: var(--accent2);
-    box-shadow: 0 8px 24px rgba(212,84,26,0.12);
-    transform: translateY(-3px);
-  }
+  .section-divider{display:flex;align-items:center;gap:12px;margin:28px 0 24px;}
+  .section-divider::before,.section-divider::after{content:'';flex:1;height:1px;background:var(--warm);}
+  .section-divider span{font-size:11px;color:var(--light);white-space:nowrap;font-weight:600;letter-spacing:1px;}
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  .state-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;text-align:center;color:var(--light);gap:12px;}
+  .state-empty .big-emoji{font-size:64px;}
+  .state-empty h2{font-size:18px;font-weight:700;color:var(--mid);}
+  .state-empty p{font-size:13px;line-height:1.7;max-width:300px;}
+  .loading-dots{display:flex;gap:6px;justify-content:center;margin-top:8px;}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--accent2);animation:bounce .9s ease-in-out infinite;}
+  .dot:nth-child(2){animation-delay:.18s;}.dot:nth-child(3){animation-delay:.36s;}
+  @keyframes bounce{0%,100%{transform:translateY(0);opacity:.6}50%{transform:translateY(-8px);opacity:1}}
+  .ai-dot{background:var(--ai1) !important;}
 
-  .card-emoji-band {
-    height: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 48px;
-    background: var(--soft);
-    border-bottom: 1.5px solid var(--warm);
-  }
-  .card-body { padding: 16px; }
-  .card-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--dark);
-    margin-bottom: 6px;
-  }
-  .card-desc {
-    font-size: 12px;
-    color: var(--mid);
-    line-height: 1.6;
-    margin-bottom: 12px;
-  }
-  .card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-bottom: 10px;
-  }
-  .tag {
-    padding: 3px 10px;
-    border-radius: 99px;
-    font-size: 11px;
-    font-weight: 500;
-  }
-  .tag-safe { background: var(--green-light); color: var(--green); }
-  .tag-type { background: var(--tag-bg); color: var(--accent); }
-  .tag-pet  { background: #EEF2FF; color: #5B6FD8; }
-
-  .card-ingredients {
-    font-size: 11px;
-    color: var(--mid);
-    line-height: 1.7;
-  }
-  .card-ingredients strong { color: var(--dark); font-weight: 600; }
-
-  /* EMPTY / LOADING STATE */
-  .state-empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 60vh;
-    text-align: center;
-    color: var(--light);
-    gap: 12px;
-  }
-  .state-empty .big-emoji { font-size: 64px; }
-  .state-empty h2 { font-size: 18px; font-weight: 700; color: var(--mid); }
-  .state-empty p { font-size: 13px; line-height: 1.7; max-width: 300px; }
-
-  .loading-dots {
-    display: flex;
-    gap: 6px;
-    justify-content: center;
-    margin-top: 8px;
-  }
-  .dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--accent2);
-    animation: bounce 0.9s ease-in-out infinite;
-  }
-  .dot:nth-child(2) { animation-delay: 0.18s; }
-  .dot:nth-child(3) { animation-delay: 0.36s; }
-  @keyframes bounce {
-    0%,100% { transform: translateY(0); opacity: .6; }
-    50%      { transform: translateY(-8px); opacity: 1; }
-  }
+  .error-box{background:var(--red-light);border:1.5px solid #F5B8B8;border-radius:var(--radius-sm);padding:14px 16px;font-size:13px;color:var(--red);line-height:1.6;}
 
   /* MODAL */
-  .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(42,31,20,0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 200;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s;
-  }
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal {
-    background: var(--cream);
-    border-radius: 20px;
-    padding: 32px;
-    max-width: 520px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    transform: scale(0.94);
-    transition: transform 0.2s;
-  }
-  .modal-overlay.open .modal { transform: scale(1); }
-  .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
-  .modal-title { font-family: 'Black Han Sans', sans-serif; font-size: 22px; }
-  .modal-close {
-    background: none; border: none; font-size: 20px; cursor: pointer;
-    color: var(--mid); padding: 0 4px; line-height: 1;
-  }
-  .modal-section { margin-bottom: 20px; }
-  .modal-section-title {
-    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
-    text-transform: uppercase; color: var(--light); margin-bottom: 10px;
-  }
-  .ingredient-list {
-    display: flex; flex-wrap: wrap; gap: 6px;
-  }
-  .ing-chip {
-    padding: 5px 12px; border-radius: 99px;
-    font-size: 12px; font-weight: 500;
-    background: var(--green-light); color: var(--green);
-    border: 1px solid #9EC89E;
-  }
-  .steps-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .steps-list li {
-    display: flex; gap: 12px; align-items: flex-start;
-    font-size: 13px; color: var(--dark); line-height: 1.6;
-  }
-  .step-num {
-    min-width: 24px; height: 24px; border-radius: 50%;
-    background: var(--accent); color: white;
-    font-size: 11px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; margin-top: 1px;
-  }
-  .nutrition-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
-  }
-  .nutr-cell {
-    background: white; border-radius: 10px;
-    border: 1.5px solid var(--warm);
-    padding: 10px; text-align: center;
-  }
-  .nutr-val { font-size: 18px; font-weight: 700; color: var(--accent); }
-  .nutr-lbl { font-size: 11px; color: var(--mid); margin-top: 2px; }
-  .warning-box {
-    background: #FFF8EC; border: 1.5px solid #F0C060;
-    border-radius: var(--radius-sm); padding: 12px 14px;
-    font-size: 12px; color: #8A6020; line-height: 1.6;
-  }
-
-  .ai-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    padding: 4px 10px; border-radius: 99px;
-    background: linear-gradient(135deg, #f5a623, #e05c1e);
-    color: white; font-size: 11px; font-weight: 700;
-    margin-bottom: 16px;
-  }
+  .modal-overlay{position:fixed;inset:0;background:rgba(42,31,20,.5);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:opacity .2s;}
+  .modal-overlay.open{opacity:1;pointer-events:all;}
+  .modal{background:var(--cream);border-radius:20px;padding:32px;max-width:520px;width:90%;max-height:80vh;overflow-y:auto;transform:scale(.94);transition:transform .2s;}
+  .modal-overlay.open .modal{transform:scale(1);}
+  .modal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
+  .modal-title{font-family:'Black Han Sans',sans-serif;font-size:22px;}
+  .modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--mid);padding:0 4px;}
+  .modal-section{margin-bottom:20px;}
+  .modal-section-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--light);margin-bottom:10px;}
+  .ingredient-list{display:flex;flex-wrap:wrap;gap:6px;}
+  .ing-chip{padding:5px 12px;border-radius:99px;font-size:12px;font-weight:500;background:var(--green-light);color:var(--green);border:1px solid #9EC89E;}
+  .steps-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .steps-list li{display:flex;gap:12px;align-items:flex-start;font-size:13px;color:var(--dark);line-height:1.6;}
+  .step-num{min-width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--ai1),var(--ai2));color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .step-num.db{background:var(--accent);}
+  .nutrition-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .nutr-cell{background:var(--soft);border-radius:10px;padding:10px;text-align:center;}
+  .nutr-val{font-size:18px;font-weight:700;color:var(--accent);}
+  .nutr-lbl{font-size:11px;color:var(--mid);margin-top:2px;}
+  .warning-box{background:#FFF8EC;border:1.5px solid #F0C060;border-radius:var(--radius-sm);padding:12px 14px;font-size:12px;color:#8A6020;line-height:1.6;}
+  .ai-notice{background:#F5F3FF;border:1.5px solid #C4B5FD;border-radius:var(--radius-sm);padding:12px 14px;font-size:12px;color:var(--ai1);line-height:1.6;margin-top:10px;}
 </style>
 </head>
 <body>
-
 <nav>
   <div class="logo">Paw<span>Recipe</span> 🐾</div>
   <div class="nav-sub">알러지 없는 맞춤 레시피</div>
 </nav>
 
 <div class="app-shell">
-
-  <!-- LEFT PANEL -->
   <aside class="panel-left">
-
-    <!-- 반려동물 선택 -->
     <div>
       <div class="section-label">반려동물</div>
       <div class="pet-tabs">
-        <div class="pet-tab active" data-pet="dog" onclick="selectPet('dog')">
-          <span class="emoji">🐶</span>강아지
-        </div>
-        <div class="pet-tab" data-pet="cat" onclick="selectPet('cat')">
-          <span class="emoji">🐱</span>고양이
-        </div>
+        <div class="pet-tab active" data-pet="dog" onclick="selectPet('dog')"><span class="emoji">🐶</span>강아지</div>
+        <div class="pet-tab" data-pet="cat" onclick="selectPet('cat')"><span class="emoji">🐱</span>고양이</div>
       </div>
     </div>
-
-    <!-- 알러지 성분 -->
     <div>
       <div class="section-label">알러지 성분 선택</div>
       <div class="allergy-grid" id="allergyGrid"></div>
       <div class="custom-allergy">
-        <input type="text" id="customInput" placeholder="기타 성분 직접 입력..." onkeydown="if(event.key==='Enter') addCustom()">
-        <button class="btn-add" onclick="addCustom()">추가</button>
+        <input type="text" id="customInput" placeholder="기타 성분 직접 입력..." onkeydown="if(event.key==='Enter')addCustom()">
+        <button class="btn-sm" onclick="addCustom()">추가</button>
       </div>
     </div>
-
-    <!-- 선택 요약 -->
     <div>
       <div class="section-label">제외할 성분</div>
       <div class="selected-summary empty" id="selectedSummary">아직 선택된 성분이 없어요</div>
     </div>
-
-    <!-- 식사 유형 -->
     <div>
       <div class="section-label">레시피 유형</div>
       <div class="meal-types">
@@ -479,30 +174,25 @@
         <div class="meal-chip" data-meal="supplement" onclick="selectMeal(this)">영양 보충</div>
       </div>
     </div>
-
-    <button class="btn-search" id="searchBtn" onclick="doSearch()">🔍 레시피 찾기</button>
-
+    <div class="btn-group">
+      <button class="btn-search" id="searchBtn" onclick="doSearch()">🔍 DB 레시피 찾기</button>
+      <button class="btn-ai" id="aiBtn" onclick="doAiGenerate()">✨ AI 레시피 즉석 생성</button>
+    </div>
   </aside>
 
-  <!-- RIGHT PANEL -->
   <main class="panel-right" id="panelRight">
-    <div class="state-empty" id="emptyState">
+    <div class="state-empty">
       <div class="big-emoji">🥣</div>
       <h2>어떤 성분을 피해야 하나요?</h2>
-      <p>왼쪽에서 알러지 성분을 선택하고<br>레시피 찾기를 눌러보세요.<br>안전한 맞춤 레시피를 추천해 드려요!</p>
+      <p>알러지 성분을 선택한 뒤<br><b>DB 레시피 찾기</b>로 기존 레시피를 보거나<br><b>✨ AI 레시피 즉석 생성</b>으로<br>새 레시피를 만들어 보세요!</p>
     </div>
   </main>
-
 </div>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-  <div class="modal" id="modal">
+  <div class="modal">
     <div class="modal-header">
-      <div>
-        <div class="ai-badge">✨ AI 추천 레시피</div>
-        <div class="modal-title" id="modalTitle"></div>
-      </div>
+      <div class="modal-title" id="modalTitle"></div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div id="modalBody"></div>
@@ -510,321 +200,306 @@
 </div>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────
+const ALLERGENS_DOG=['닭고기','소고기','돼지고기','양고기','연어','참치','달걀','유제품','밀/글루텐','콩','옥수수','감자','오리고기','양파','마늘','포도','자일리톨'];
+const ALLERGENS_CAT=['닭고기','소고기','참치','연어','유제품','달걀','밀/글루텐','콩','옥수수','양파','마늘','포도','초콜릿','카페인'];
 
-const ALLERGENS_DOG = ['닭고기','소고기','돼지고기','양고기','연어','참치','달걀','유제품','밀/글루텐','콩','옥수수','감자','쌀','오리고기','양파','마늘','포도','자일리톨'];
-const ALLERGENS_CAT = ['닭고기','소고기','참치','연어','유제품','달걀','밀/글루텐','콩','옥수수','양파','마늘','포도','초콜릿','카페인'];
-
-const RECIPES = [
-  // DOG
-  {
-    id:1, pet:'dog', type:'home',
-    emoji:'🍠', title:'고구마 오리 쿠키',
-    desc:'저알러지 오리고기와 고구마로 만드는 부드러운 수제 쿠키',
-    allergens:['닭고기','소고기','밀/글루텐','달걀','유제품'],
-    tags:['수제 간식','그레인프리','저알러지'],
-    ingredients:['오리 가슴살 100g','고구마 150g','귀리가루 50g','코코넛오일 1T'],
-    steps:['고구마를 쪄서 으깬다.','오리 가슴살을 잘게 다진다.','모든 재료를 섞어 반죽한다.','1cm 두께로 밀어 모양을 찍는다.','170°C에서 20분 굽는다.','충분히 식힌 후 급여한다.'],
-    nutrition:{칼로리:'28kcal',단백질:'3.2g',지방:'1.1g'},
-    caution:'오리고기 알러지가 있는 경우 칠면조고기로 대체하세요.'
-  },
-  {
-    id:2, pet:'dog', type:'main',
-    emoji:'🥩', title:'연어 감자 죽',
-    desc:'소화가 잘 되는 연어와 감자로 만든 영양 만점 일반식',
-    allergens:['닭고기','소고기','달걀','밀/글루텐','유제품','콩'],
-    tags:['일반식','소화 용이','오메가3'],
-    ingredients:['연어 필렛 120g','감자 200g','당근 50g','물 300ml','올리브오일 1T'],
-    steps:['연어를 한입 크기로 자른다.','감자와 당근을 깍뚝썰기한다.','냄비에 물과 채소를 넣고 10분 끓인다.','연어를 넣고 5분 더 익힌다.','올리브오일을 넣어 마무리한다.','30°C 이하로 식혀서 급여한다.'],
-    nutrition:{칼로리:'145kcal',단백질:'18g',지방:'5g'},
-    caution:'연어 알러지가 있다면 대구나 명태로 대체하세요.'
-  },
-  {
-    id:3, pet:'dog', type:'supplement',
-    emoji:'🥦', title:'채소 영양 볼',
-    desc:'브로콜리·당근·블루베리로 만드는 항산화 간식 볼',
-    allergens:['닭고기','소고기','달걀','밀/글루텐','유제품','콩','옥수수'],
-    tags:['영양 보충','채소'],
-    ingredients:['브로콜리 80g','당근 60g','블루베리 30g','귀리 30g','코코넛오일 1T'],
-    steps:['브로콜리와 당근을 쪄서 식힌다.','모든 재료를 푸드프로세서로 간다.','동그랗게 볼 형태로 빚는다.','냉장 보관 후 급여한다.'],
-    nutrition:{칼로리:'22kcal',단백질:'1.4g',지방:'0.8g'},
-    caution:'블루베리는 소량부터 시작해 반응을 살펴보세요.'
-  },
-  {
-    id:4, pet:'dog', type:'raw',
-    emoji:'🦌', title:'사슴고기 생식 믹스',
-    desc:'단백질 알러지가 많은 반려견을 위한 신선육 생식',
-    allergens:['닭고기','소고기','돼지고기','달걀','밀/글루텐','유제품','콩'],
-    tags:['생식','저알러지','신선육'],
-    ingredients:['사슴 다짐육 150g','시금치 40g','당근 30g','호박씨 5g','연어오일 5ml'],
-    steps:['사슴육을 실온에서 30분 해동한다.','채소를 잘게 다진다.','모든 재료를 섞어 접시에 담는다.','소량 급여 후 반응을 확인한다.'],
-    nutrition:{칼로리:'162kcal',단백질:'22g',지방:'7g'},
-    caution:'생식은 초기에 소량만 급여하고, 배변 상태를 관찰하세요.'
-  },
-  {
-    id:5, pet:'dog', type:'home',
-    emoji:'🍌', title:'바나나 땅콩버터 볼',
-    desc:'에너지가 넘치는 아이를 위한 달콤 간식',
-    allergens:['닭고기','소고기','달걀','밀/글루텐','유제품'],
-    tags:['수제 간식','에너지'],
-    ingredients:['바나나 1개','무염 땅콩버터 2T','귀리가루 100g','꿀 1t'],
-    steps:['바나나를 으깬다.','모든 재료를 잘 섞는다.','작은 볼 형태로 빚는다.','냉장 보관 후 급여한다.'],
-    nutrition:{칼로리:'35kcal',단백질:'1.2g',지방:'1.8g'},
-    caution:'자일리톨이 없는 땅콩버터인지 반드시 확인하세요. 비만견에게는 소량만 급여하세요.'
-  },
-  // CAT
-  {
-    id:6, pet:'cat', type:'main',
-    emoji:'🐟', title:'흰살생선 무침',
-    desc:'고양이가 좋아하는 대구와 미역으로 만드는 촉촉한 일반식',
-    allergens:['닭고기','참치','연어','달걀','유제품','밀/글루텐'],
-    tags:['일반식','저지방','해산물'],
-    ingredients:['대구 필렛 100g','미역 10g','당근 20g','물 50ml'],
-    steps:['대구를 쪄서 살을 발라낸다.','미역과 당근을 잘게 다진다.','모든 재료를 섞는다.','물을 조금 넣어 촉촉하게 만든다.'],
-    nutrition:{칼로리:'92kcal',단백질:'19g',지방:'1.5g'},
-    caution:'생선은 주 3회 이하로 급여하고 타우린 보충에 신경 쓰세요.'
-  },
-  {
-    id:7, pet:'cat', type:'home',
-    emoji:'🫐', title:'칠면조 블루베리 트릿',
-    desc:'닭고기 알러지 고양이를 위한 대체 단백질 간식',
-    allergens:['닭고기','소고기','달걀','유제품','밀/글루텐','참치','연어'],
-    tags:['수제 간식','저알러지','그레인프리'],
-    ingredients:['칠면조 다짐육 100g','블루베리 15g','귀리가루 30g','코코넛오일 1t'],
-    steps:['칠면조를 볶아서 식힌다.','블루베리를 으깬다.','모든 재료를 섞는다.','작은 볼로 빚어 냉장 보관한다.'],
-    nutrition:{칼로리:'18kcal',단백질:'2.8g',지방:'0.6g'},
-    caution:'고양이는 소량의 탄수화물만 소화할 수 있으므로 귀리가루는 최소화하세요.'
-  },
-  {
-    id:8, pet:'cat', type:'raw',
-    emoji:'🥩', title:'토끼고기 미니 생식',
-    desc:'다중 단백질 알러지 고양이를 위한 신선 생식 옵션',
-    allergens:['닭고기','소고기','참치','연어','달걀','유제품'],
-    tags:['생식','저알러지','신선육'],
-    ingredients:['토끼 다짐육 120g','호박 20g','연어오일 3ml','타우린 보충제'],
-    steps:['재료를 해동 후 섞는다.','작은 접시에 담아 급여한다.','남은 양은 냉동 보관한다.'],
-    nutrition:{칼로리:'110kcal',단백질:'20g',지방:'3g'},
-    caution:'고양이 생식은 반드시 수의사와 상담 후 시작하세요. 타우린 결핍에 주의하세요.'
-  },
-  {
-    id:9, pet:'cat', type:'supplement',
-    emoji:'🎃', title:'단호박 치킨프리 스프',
-    desc:'소화 기능을 돕는 단호박과 오리고기 영양 스프',
-    allergens:['닭고기','소고기','달걀','유제품','참치','밀/글루텐'],
-    tags:['영양 보충','소화 용이','스프'],
-    ingredients:['단호박 80g','오리 다짐육 60g','물 150ml','올리브오일 1t'],
-    steps:['단호박을 쪄서 으깬다.','오리육을 볶는다.','물과 함께 끓인다.','체에 걸러 스프 형태로 만든다.'],
-    nutrition:{칼로리:'68kcal',단백질:'8g',지방:'2.5g'},
-    caution:'소화가 약한 고양이에게 적합합니다. 처음엔 1T씩 급여하세요.'
-  },
+const RECIPES=[
+  {id:1,pet:'dog',type:'home',emoji:'🍠',title:'고구마 오리 쿠키',desc:'저알러지 오리고기와 고구마로 만드는 부드러운 수제 쿠키',allergens:['닭고기','소고기','밀/글루텐','달걀','유제품'],tags:['수제 간식','그레인프리'],ingredients:['오리 가슴살 100g','고구마 150g','귀리가루 50g','코코넛오일 1T'],steps:['고구마를 쪄서 으깬다.','오리 가슴살을 잘게 다진다.','모든 재료를 섞어 반죽한다.','170°C에서 20분 굽는다.','충분히 식힌 후 급여한다.'],nutrition:{칼로리:'28kcal',단백질:'3.2g',지방:'1.1g'},caution:'오리고기 알러지가 있는 경우 칠면조로 대체하세요.'},
+  {id:2,pet:'dog',type:'main',emoji:'🥩',title:'연어 감자 죽',desc:'소화가 잘 되는 연어와 감자로 만든 영양 만점 일반식',allergens:['닭고기','소고기','달걀','밀/글루텐','유제품'],tags:['일반식','소화 용이'],ingredients:['연어 필렛 120g','감자 200g','당근 50g','물 300ml'],steps:['연어를 한입 크기로 자른다.','감자와 당근을 깍뚝썰기한다.','냄비에 물과 채소를 넣고 10분 끓인다.','연어를 넣고 5분 더 익힌다.','30°C 이하로 식혀서 급여한다.'],nutrition:{칼로리:'145kcal',단백질:'18g',지방:'5g'},caution:'연어 알러지가 있다면 대구로 대체하세요.'},
+  {id:3,pet:'dog',type:'supplement',emoji:'🥦',title:'채소 영양 볼',desc:'브로콜리·당근·블루베리로 만드는 항산화 간식',allergens:['닭고기','소고기','달걀','밀/글루텐','유제품','콩'],tags:['영양 보충','채소'],ingredients:['브로콜리 80g','당근 60g','블루베리 30g','귀리 30g'],steps:['브로콜리와 당근을 쪄서 식힌다.','모든 재료를 푸드프로세서로 간다.','볼 형태로 빚는다.','냉장 보관 후 급여한다.'],nutrition:{칼로리:'22kcal',단백질:'1.4g',지방:'0.8g'},caution:'블루베리는 소량부터 급여하세요.'},
+  {id:4,pet:'dog',type:'raw',emoji:'🦌',title:'사슴고기 생식 믹스',desc:'단백질 알러지가 많은 반려견을 위한 신선육 생식',allergens:['닭고기','소고기','돼지고기','달걀','밀/글루텐','유제품'],tags:['생식','저알러지'],ingredients:['사슴 다짐육 150g','시금치 40g','당근 30g','연어오일 5ml'],steps:['사슴육을 실온에서 30분 해동한다.','채소를 잘게 다진다.','모든 재료를 섞어 담는다.','소량 급여 후 반응을 확인한다.'],nutrition:{칼로리:'162kcal',단백질:'22g',지방:'7g'},caution:'생식은 초기에 소량만 급여하세요.'},
+  {id:5,pet:'cat',type:'main',emoji:'🐟',title:'흰살생선 무침',desc:'대구와 미역으로 만드는 촉촉한 일반식',allergens:['닭고기','참치','연어','달걀','유제품','밀/글루텐'],tags:['일반식','저지방'],ingredients:['대구 필렛 100g','미역 10g','당근 20g','물 50ml'],steps:['대구를 쪄서 살을 발라낸다.','미역과 당근을 잘게 다진다.','모든 재료를 섞는다.','물을 조금 넣어 촉촉하게 만든다.'],nutrition:{칼로리:'92kcal',단백질:'19g',지방:'1.5g'},caution:'생선은 주 3회 이하로 급여하세요.'},
+  {id:6,pet:'cat',type:'home',emoji:'🫐',title:'칠면조 블루베리 트릿',desc:'닭고기 알러지 고양이를 위한 대체 단백질 간식',allergens:['닭고기','소고기','달걀','유제품','밀/글루텐','참치','연어'],tags:['수제 간식','저알러지'],ingredients:['칠면조 다짐육 100g','블루베리 15g','귀리가루 30g'],steps:['칠면조를 볶아서 식힌다.','블루베리를 으깬다.','모든 재료를 섞는다.','작은 볼로 빚어 냉장 보관한다.'],nutrition:{칼로리:'18kcal',단백질:'2.8g',지방:'0.6g'},caution:'귀리가루는 최소화하세요.'},
+  {id:7,pet:'cat',type:'raw',emoji:'🥩',title:'토끼고기 미니 생식',desc:'다중 단백질 알러지 고양이를 위한 신선 생식',allergens:['닭고기','소고기','참치','연어','달걀','유제품'],tags:['생식','저알러지'],ingredients:['토끼 다짐육 120g','호박 20g','연어오일 3ml','타우린 보충제'],steps:['재료를 해동 후 섞는다.','작은 접시에 담아 급여한다.','남은 양은 냉동 보관한다.'],nutrition:{칼로리:'110kcal',단백질:'20g',지방:'3g'},caution:'수의사 상담 후 시작하세요. 타우린 결핍에 주의하세요.'},
+  {id:8,pet:'cat',type:'supplement',emoji:'🎃',title:'단호박 치킨프리 스프',desc:'소화 기능을 돕는 단호박과 오리고기 스프',allergens:['닭고기','소고기','달걀','유제품','참치','밀/글루텐'],tags:['영양 보충','소화 용이'],ingredients:['단호박 80g','오리 다짐육 60g','물 150ml'],steps:['단호박을 쪄서 으깬다.','오리육을 볶는다.','물과 함께 끓인다.','체에 걸러 스프로 만든다.'],nutrition:{칼로리:'68kcal',단백질:'8g',지방:'2.5g'},caution:'처음엔 1T씩 급여하세요.'},
 ];
 
-// ── STATE ─────────────────────────────────────────────────────
-let currentPet = 'dog';
-let selectedAllergens = new Set();
-let selectedMeal = 'all';
-let customAllergens = [];
+// !! AI 기능을 사용하려면 아래에 Anthropic API 키를 입력하세요
+const ANTHROPIC_API_KEY = '';
 
-// ── INIT ──────────────────────────────────────────────────────
-function init() {
-  renderAllergenChips();
-}
+let currentPet='dog',selectedAllergens=new Set(),selectedMeal='all',customAllergens=[],aiRecipes=[],isStreaming=false;
 
-function renderAllergenChips() {
-  const list = currentPet === 'dog' ? ALLERGENS_DOG : ALLERGENS_CAT;
-  const grid = document.getElementById('allergyGrid');
-  grid.innerHTML = '';
-  list.forEach(a => {
-    const chip = document.createElement('div');
-    chip.className = 'allergy-chip' + (selectedAllergens.has(a) ? ' selected' : '');
-    chip.textContent = a;
-    chip.onclick = () => toggleAllergen(a, chip);
-    grid.appendChild(chip);
-  });
-  // custom allergens
-  customAllergens.forEach(a => {
-    const chip = document.createElement('div');
-    chip.className = 'allergy-chip' + (selectedAllergens.has(a) ? ' selected' : '');
-    chip.textContent = a + ' 🗑';
-    chip.onclick = () => { customAllergens = customAllergens.filter(x=>x!==a); selectedAllergens.delete(a); renderAllergenChips(); updateSummary(); };
-    grid.appendChild(chip);
+function init(){renderChips();}
+
+function renderChips(){
+  const list=currentPet==='dog'?ALLERGENS_DOG:ALLERGENS_CAT;
+  const g=document.getElementById('allergyGrid');
+  g.innerHTML='';
+  [...list,...customAllergens].forEach((a,idx)=>{
+    const chip=document.createElement('div');
+    chip.className='allergy-chip'+(selectedAllergens.has(a)?' selected':'');
+    const isCustom=idx>=list.length;
+    chip.textContent=a+(isCustom?' 🗑':'');
+    chip.onclick=isCustom
+      ?()=>{customAllergens=customAllergens.filter(x=>x!==a);selectedAllergens.delete(a);renderChips();updateSummary();}
+      :()=>toggleAllergen(a,chip);
+    g.appendChild(chip);
   });
 }
 
-function toggleAllergen(name, chip) {
-  if (selectedAllergens.has(name)) {
-    selectedAllergens.delete(name);
-    chip.classList.remove('selected');
-  } else {
-    selectedAllergens.add(name);
-    chip.classList.add('selected');
-  }
+function toggleAllergen(name,chip){
+  selectedAllergens.has(name)?(selectedAllergens.delete(name),chip.classList.remove('selected')):(selectedAllergens.add(name),chip.classList.add('selected'));
   updateSummary();
 }
 
-function updateSummary() {
-  const el = document.getElementById('selectedSummary');
-  if (selectedAllergens.size === 0) {
-    el.textContent = '아직 선택된 성분이 없어요';
-    el.classList.add('empty');
-  } else {
-    el.textContent = [...selectedAllergens].map(a => `🚫 ${a}`).join('  ');
-    el.classList.remove('empty');
-  }
+function updateSummary(){
+  const el=document.getElementById('selectedSummary');
+  selectedAllergens.size===0?(el.textContent='아직 선택된 성분이 없어요',el.classList.add('empty')):(el.textContent=[...selectedAllergens].map(a=>`🚫 ${a}`).join('  '),el.classList.remove('empty'));
 }
 
-function selectPet(pet) {
-  currentPet = pet;
-  document.querySelectorAll('.pet-tab').forEach(t => t.classList.toggle('active', t.dataset.pet === pet));
-  selectedAllergens.clear();
-  renderAllergenChips();
-  updateSummary();
-  resetResults();
+function selectPet(pet){
+  currentPet=pet;aiRecipes=[];selectedAllergens.clear();
+  document.querySelectorAll('.pet-tab').forEach(t=>t.classList.toggle('active',t.dataset.pet===pet));
+  renderChips();updateSummary();resetPanel();
 }
 
-function resetResults() {
-  document.getElementById('panelRight').innerHTML = `
-    <div class="state-empty" id="emptyState">
-      <div class="big-emoji">🥣</div>
-      <h2>어떤 성분을 피해야 하나요?</h2>
-      <p>왼쪽에서 알러지 성분을 선택하고<br>레시피 찾기를 눌러보세요.<br>안전한 맞춤 레시피를 추천해 드려요!</p>
-    </div>`;
+function resetPanel(){
+  document.getElementById('panelRight').innerHTML=`<div class="state-empty"><div class="big-emoji">🥣</div><h2>어떤 성분을 피해야 하나요?</h2><p>알러지 성분을 선택한 뒤<br><b>DB 레시피 찾기</b>로 기존 레시피를 보거나<br><b>✨ AI 레시피 즉석 생성</b>으로<br>새 레시피를 만들어 보세요!</p></div>`;
 }
 
-function selectMeal(el) {
-  document.querySelectorAll('.meal-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  selectedMeal = el.dataset.meal;
+function selectMeal(el){
+  document.querySelectorAll('.meal-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');selectedMeal=el.dataset.meal;
 }
 
-function addCustom() {
-  const input = document.getElementById('customInput');
-  const val = input.value.trim();
-  if (!val) return;
-  if (!customAllergens.includes(val)) {
-    customAllergens.push(val);
-    selectedAllergens.add(val);
-  }
-  input.value = '';
-  renderAllergenChips();
-  updateSummary();
+function addCustom(){
+  const input=document.getElementById('customInput');
+  const val=input.value.trim();
+  if(!val)return;
+  if(!customAllergens.includes(val)){customAllergens.push(val);selectedAllergens.add(val);}
+  input.value='';renderChips();updateSummary();
 }
 
-// ── SEARCH ────────────────────────────────────────────────────
-function doSearch() {
-  const btn = document.getElementById('searchBtn');
-  btn.disabled = true;
-  btn.textContent = '🔍 찾는 중...';
-
-  const panel = document.getElementById('panelRight');
-  panel.innerHTML = `<div class="state-empty"><div class="big-emoji">🍳</div><h2>맞춤 레시피 탐색 중...</h2><div class="loading-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
-
-  setTimeout(() => {
-    const results = RECIPES.filter(r => {
-      if (r.pet !== currentPet) return false;
-      if (selectedMeal !== 'all' && r.type !== selectedMeal) return false;
-      // 알러지 성분 포함된 레시피 제외
-      const blocked = [...selectedAllergens];
-      for (const bl of blocked) {
-        if (r.allergens.includes(bl)) return false;
-      }
+// ── DB SEARCH ──────────────────────────────────────────────────
+function doSearch(){
+  if(isStreaming)return;
+  const btn=document.getElementById('searchBtn');
+  btn.disabled=true;btn.textContent='🔍 찾는 중...';
+  const panel=document.getElementById('panelRight');
+  panel.innerHTML=`<div class="state-empty"><div class="big-emoji">🍳</div><h2>레시피 탐색 중...</h2><div class="loading-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
+  setTimeout(()=>{
+    const res=RECIPES.filter(r=>{
+      if(r.pet!==currentPet)return false;
+      if(selectedMeal!=='all'&&r.type!==selectedMeal)return false;
+      for(const bl of [...selectedAllergens]){if(r.allergens.includes(bl))return false;}
       return true;
     });
-
-    renderResults(results);
-    btn.disabled = false;
-    btn.textContent = '🔍 레시피 찾기';
-  }, 800);
+    renderDbResults(res);
+    btn.disabled=false;btn.textContent='🔍 DB 레시피 찾기';
+  },500);
 }
 
-function renderResults(results) {
-  const panel = document.getElementById('panelRight');
-  const petLabel = currentPet === 'dog' ? '강아지' : '고양이';
-  const allergenNote = selectedAllergens.size > 0
-    ? `<b>${[...selectedAllergens].join(', ')}</b> 제외`
-    : '알러지 성분 미선택';
+function renderDbResults(results){
+  const panel=document.getElementById('panelRight');
+  const pet=currentPet==='dog'?'강아지':'고양이';
+  const note=selectedAllergens.size>0?`<b>${[...selectedAllergens].join(', ')}</b> 제외`:'알러지 미선택';
+  let html=`<div class="results-header"><div class="results-title">📚 DB 레시피</div><div class="results-count">${pet} · ${note} · ${results.length}개</div></div>`;
+  if(!results.length){
+    html+=`<div class="state-empty" style="height:40vh"><div class="big-emoji">😿</div><h2>DB에 맞는 레시피가 없어요</h2><p>✨ AI 레시피 즉석 생성을 눌러<br>새 레시피를 만들어 보세요!</p></div>`;
+  } else {
+    html+=`<div class="recipe-grid">`;
+    results.forEach((r,i)=>{ html+=cardHtml(r,i,false); });
+    html+=`</div>`;
+  }
+  panel.innerHTML=html;
+}
 
-  if (results.length === 0) {
-    panel.innerHTML = `
-      <div class="state-empty">
-        <div class="big-emoji">😿</div>
-        <h2>조건에 맞는 레시피가 없어요</h2>
-        <p>알러지 성분을 줄이거나 식사 유형을 '전체'로 바꾸면<br>더 많은 레시피를 찾을 수 있어요.</p>
-      </div>`;
+function cardHtml(r,i,isAi){
+  const delay=i*0.07;
+  const aiClass=isAi?' ai-card':'';
+  const badge=isAi?`<div class="ai-badge-card">✦ AI</div>`:'';
+  const tagHtml=(r.tags||[]).map(t=>`<span class="tag ${isAi?'tag-ai':'tag-type'}">${t}</span>`).join('');
+  const petTag=`<span class="tag tag-pet">${currentPet==='dog'?'🐶 강아지':'🐱 고양이'}</span>`;
+  const ings=(r.ingredients||[]).slice(0,3).join(', ');
+  const moreIngs=(r.ingredients||[]).length>3?'...':'';
+  const idStr=isAi?`'${r.id}'`:r.id;
+  return `<div class="recipe-card${aiClass}" style="animation-delay:${delay}s" onclick="openModal(${idStr},${isAi})">
+    <div class="card-emoji-band">${r.emoji||'🍽'}${badge}</div>
+    <div class="card-body">
+      <div class="card-title">${r.title}</div>
+      <div class="card-desc">${r.desc}</div>
+      <div class="card-tags">${tagHtml}${petTag}</div>
+      <div class="card-ingredients"><strong>주재료:</strong> ${ings}${moreIngs}</div>
+    </div></div>`;
+}
+
+// ── AI GENERATE (STREAMING) ─────────────────────────────────────
+async function doAiGenerate(){
+  if(isStreaming)return;
+  if(!ANTHROPIC_API_KEY){
+    alert('AI 기능을 사용하려면 pawrecipe.html 파일에서 ANTHROPIC_API_KEY를 설정해주세요.');
     return;
   }
+  isStreaming=true;
+  const btn=document.getElementById('aiBtn');
+  const sBtn=document.getElementById('searchBtn');
+  btn.disabled=true;sBtn.disabled=true;
+  btn.innerHTML='<div class="btn-ai-pulse"></div>✨ AI 생성 중...';
 
-  let html = `
-    <div class="results-header">
-      <div class="results-title">🍽 추천 레시피</div>
-      <div class="results-count">${petLabel} · ${allergenNote} · ${results.length}개</div>
-    </div>
-    <div class="recipe-grid">
-  `;
+  const pet=currentPet==='dog'?'강아지':'고양이';
+  const mealMap={all:'모든 유형',home:'수제 간식',main:'일반식',raw:'생식',supplement:'영양 보충'};
+  const meal=mealMap[selectedMeal];
+  const allergens=selectedAllergens.size>0?[...selectedAllergens].join(', '):'없음';
+  const panel=document.getElementById('panelRight');
 
-  results.forEach((r, i) => {
-    const delay = i * 0.08;
-    html += `
-      <div class="recipe-card" style="animation-delay:${delay}s" onclick="openModal(${r.id})">
-        <div class="card-emoji-band">${r.emoji}</div>
-        <div class="card-body">
-          <div class="card-title">${r.title}</div>
-          <div class="card-desc">${r.desc}</div>
-          <div class="card-tags">
-            ${r.tags.map(t => `<span class="tag tag-type">${t}</span>`).join('')}
-            <span class="tag tag-pet">${currentPet === 'dog' ? '🐶 강아지' : '🐱 고양이'}</span>
-          </div>
-          <div class="card-ingredients">
-            <strong>주재료:</strong> ${r.ingredients.slice(0,3).join(', ')} ${r.ingredients.length > 3 ? '...' : ''}
-          </div>
-        </div>
+  panel.innerHTML=`
+    <div id="aiSection">
+      <div class="results-header">
+        <div class="results-title">✨ AI 레시피 생성</div>
+        <div class="results-count" style="color:var(--ai1)">✦ Claude AI · ${pet}</div>
       </div>
-    `;
-  });
+      <div class="stream-box">
+        <div class="stream-header">
+          <div style="font-size:12px;color:var(--mid)">🐾 <b>${pet}</b> &nbsp;|&nbsp; 제외 성분: <b style="color:var(--red)">${allergens}</b> &nbsp;|&nbsp; 유형: <b>${meal}</b></div>
+        </div>
+        <div class="stream-content" id="streamContent"><span class="cursor"></span></div>
+      </div>
+    </div>`;
 
-  html += '</div>';
-  panel.innerHTML = html;
+  const prompt=`당신은 반려동물 영양 전문가입니다. 아래 조건으로 반려동물 레시피를 2가지 만들어주세요.
+
+조건:
+- 대상: ${pet}
+- 반드시 제외할 알러지 성분: ${allergens}
+- 레시피 유형: ${meal}
+
+절대로 제외 성분이 포함되지 않도록 해주세요.
+다음 JSON 배열 형식으로만 응답하세요 (마크다운 코드블록 없이):
+[
+  {
+    "emoji": "이모지1개",
+    "title": "레시피 이름",
+    "desc": "한 줄 설명",
+    "tags": ["태그1","태그2"],
+    "ingredients": ["재료1 분량","재료2 분량","재료3 분량"],
+    "steps": ["단계1","단계2","단계3","단계4"],
+    "nutrition": {"칼로리":"숫자kcal","단백질":"숫자g","지방":"숫자g"},
+    "caution": "주의사항"
+  }
+]`;
+
+  let fullText='';
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':ANTHROPIC_API_KEY,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1500,
+        stream:true,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    if(!res.ok)throw new Error(`API 오류 ${res.status}: API 키를 확인해주세요`);
+
+    const reader=res.body.getReader();
+    const dec=new TextDecoder();
+    const contentEl=document.getElementById('streamContent');
+
+    while(true){
+      const{done,value}=await reader.read();
+      if(done)break;
+      const chunk=dec.decode(value,{stream:true});
+      for(const line of chunk.split('\n')){
+        if(!line.startsWith('data: '))continue;
+        const raw=line.slice(6).trim();
+        if(raw==='[DONE]')continue;
+        try{
+          const p=JSON.parse(raw);
+          if(p.type==='content_block_delta'&&p.delta?.text){
+            fullText+=p.delta.text;
+            if(contentEl) contentEl.innerHTML=esc(fullText)+'<span class="cursor"></span>';
+          }
+        }catch(e){}
+      }
+    }
+    await finalizeAiResult(fullText,pet,allergens);
+  }catch(err){
+    const sec=document.getElementById('aiSection');
+    if(sec) sec.insertAdjacentHTML('beforeend',`<div class="error-box" style="margin-top:16px">⚠️ <b>AI 생성 실패:</b> ${esc(err.message)}</div>`);
+  }
+
+  isStreaming=false;
+  btn.disabled=false;sBtn.disabled=false;
+  btn.textContent='✨ AI 레시피 즉석 생성';
 }
 
-// ── MODAL ─────────────────────────────────────────────────────
-function openModal(id) {
-  const r = RECIPES.find(x => x.id === id);
-  if (!r) return;
-  document.getElementById('modalTitle').textContent = r.emoji + ' ' + r.title;
+async function finalizeAiResult(raw,pet,allergens){
+  const panel=document.getElementById('panelRight');
+  let recipes=[];
+  try{
+    const m=raw.match(/\[[\s\S]*\]/);
+    if(m)recipes=JSON.parse(m[0]);
+  }catch(e){}
 
-  const body = document.getElementById('modalBody');
-  body.innerHTML = `
+  if(!recipes.length)return;
+
+  aiRecipes=recipes.map((r,i)=>({...r,id:'ai_'+Date.now()+'_'+i,pet:currentPet,type:selectedMeal}));
+
+  const dbRes=RECIPES.filter(r=>{
+    if(r.pet!==currentPet)return false;
+    for(const bl of [...selectedAllergens]){if(r.allergens.includes(bl))return false;}
+    return true;
+  });
+
+  let html=`
+    <div class="results-header">
+      <div class="results-title">✨ AI 생성 레시피</div>
+      <div class="results-count" style="color:var(--ai1)">✦ Claude AI · ${pet} · 제외: ${allergens}</div>
+    </div>
+    <div class="recipe-grid">`;
+  aiRecipes.forEach((r,i)=>{html+=cardHtml(r,i,true);});
+  html+=`</div>`;
+
+  if(dbRes.length){
+    html+=`<div class="section-divider"><span>📚 DB 레시피</span></div><div class="recipe-grid">`;
+    dbRes.forEach((r,i)=>{html+=cardHtml(r,i,false);});
+    html+=`</div>`;
+  }
+  panel.innerHTML=html;
+}
+
+function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// ── MODAL ──────────────────────────────────────────────────────
+function openModal(id,isAi){
+  const r=isAi?aiRecipes.find(x=>x.id===id):RECIPES.find(x=>x.id===id);
+  if(!r)return;
+  document.getElementById('modalTitle').innerHTML=
+    (isAi?`<div style="font-size:11px;color:var(--ai1);font-weight:700;letter-spacing:1px;margin-bottom:6px;">✦ AI 생성 레시피</div>`:'')
+    +(r.emoji||'🍽')+' '+r.title;
+
+  const body=document.getElementById('modalBody');
+  const stepClass=isAi?'':'db';
+  body.innerHTML=`
     <div class="modal-section">
       <div class="modal-section-title">재료</div>
-      <div class="ingredient-list">
-        ${r.ingredients.map(i => `<span class="ing-chip">${i}</span>`).join('')}
-      </div>
+      <div class="ingredient-list">${(r.ingredients||[]).map(i=>`<span class="ing-chip">${i}</span>`).join('')}</div>
     </div>
     <div class="modal-section">
       <div class="modal-section-title">만드는 방법</div>
-      <ol class="steps-list">
-        ${r.steps.map((s,i) => `<li><span class="step-num">${i+1}</span><span>${s}</span></li>`).join('')}
-      </ol>
+      <ol class="steps-list">${(r.steps||[]).map((s,i)=>`<li><span class="step-num ${stepClass}">${i+1}</span><span>${s}</span></li>`).join('')}</ol>
     </div>
     <div class="modal-section">
       <div class="modal-section-title">영양 정보 (1회 기준)</div>
-      <div class="nutrition-grid">
-        ${Object.entries(r.nutrition).map(([k,v]) => `<div class="nutr-cell"><div class="nutr-val">${v}</div><div class="nutr-lbl">${k}</div></div>`).join('')}
-      </div>
+      <div class="nutrition-grid">${Object.entries(r.nutrition||{}).map(([k,v])=>`<div class="nutr-cell"><div class="nutr-val">${v}</div><div class="nutr-lbl">${k}</div></div>`).join('')}</div>
     </div>
     <div class="modal-section">
       <div class="modal-section-title">주의사항</div>
-      <div class="warning-box">⚠️ ${r.caution}</div>
-    </div>
-  `;
-
+      <div class="warning-box">⚠️ ${r.caution||'급여 전 수의사 확인을 권장합니다.'}</div>
+      ${isAi?`<div class="ai-notice" style="margin-top:10px;">✦ 이 레시피는 Claude AI가 실시간으로 생성했습니다. 정식 급여 전 수의사 확인을 권장합니다.</div>`:''}
+    </div>`;
   document.getElementById('modalOverlay').classList.add('open');
 }
 
-function closeModal(e) {
-  if (!e || e.target === document.getElementById('modalOverlay') || e.target.classList.contains('modal-close')) {
+function closeModal(e){
+  if(!e||e.target===document.getElementById('modalOverlay')||e.target.classList.contains('modal-close'))
     document.getElementById('modalOverlay').classList.remove('open');
-  }
 }
 
 init();
